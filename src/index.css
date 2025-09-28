@@ -164,6 +164,20 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.4);
   }
   
+  /* Red Shadow Effect for First Section */
+  .ts-red-shadow-strong {
+    text-shadow: 
+      27px -27px 0px rgba(255, 0, 0, 0.36),
+      27px -27px 8px rgba(255, 0, 0, 0.2),
+      0 0 16px rgba(255, 0, 0, 0.1);
+  }
+  
+  .ts-red-shadow-soft {
+    text-shadow: 
+      27px -27px 0px rgba(255, 0, 0, 0.36),
+      27px -27px 6px rgba(255, 0, 0, 0.15);
+  }
+  
   /* Zoom Independent Typography - Using Viewport Units */
   .text-fixed-title {
     font-size: 12vmin !important; /* Hero section - larger */

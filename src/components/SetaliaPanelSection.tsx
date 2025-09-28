@@ -135,13 +135,13 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           {/* Title with strong shadow like Canva */}
           <h1
             className={`font-display ${title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"}
-                        ts-strong text-pure-white mb-4 tracking-[0.18em]`}
+                        ${title === "SETALIA" ? "ts-red-shadow-strong" : "ts-strong"} text-pure-white mb-4 tracking-[0.18em]`}
           >
             {title}
           </h1>
 
           {/* Subtitle with softer shadow */}
-          <p className="font-secondary text-fixed-subtitle ts-soft text-pure-white mb-8 tracking-[0.08em] uppercase">
+          <p className={`font-secondary text-fixed-subtitle ${title === "SETALIA" ? "ts-red-shadow-soft" : "ts-soft"} text-pure-white mb-8 tracking-[0.08em] uppercase`}>
             {subtitle}
           </p>
 
