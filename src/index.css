@@ -126,7 +126,15 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   /* Parallax Effect */
   .parallax-bg {
     will-change: transform;
-    transition: transform 0.1s ease-out;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  
+  /* Disable parallax on mobile for performance */
+  @media (max-width: 768px) {
+    .parallax-bg {
+      transform: none !important;
+    }
   }
   
   /* Text Shadow for Legibility */

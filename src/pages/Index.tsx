@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import SetaliaPanelSection from "@/components/SetaliaPanelSection";
 import EnquiryModal from "@/components/EnquiryModal";
 
-// Import images
-import heroBackground from "@/assets/hero-background.png";
-import heroForeground from "@/assets/hero-foreground.png";
-import panel2Background from "@/assets/panel2-background.png";
-import panel3Background from "@/assets/panel3-background.png";
-import panel4Background from "@/assets/panel4-background.png";
+// Cloudinary image URLs
+const heroBackground = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928444/card_one_background_flp9ud.png";
+const heroForeground = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1759087816/card_1_image_upper_1_jklm6a.png";
+const panel2Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928441/card_2_backgroun_uarjfj.png";
+const panel3Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928438/card_3_background_lxx14a.png";
+const panel4Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928435/card_4_background_hujztq.png";
 
 const Index = () => {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);

@@ -25,8 +25,17 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -58,14 +67,18 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       <div 
         className="absolute inset-0 parallax-bg"
         style={{
-          transform: `translateY(${parallaxOffset}px)`,
+          transform: `translate3d(0, ${parallaxOffset}px, 0)`,
         }}
       >
         <img
           src={backgroundImage}
           alt={altText}
-          className="w-full h-[120%] object-cover"
+          className="w-full min-h-full object-cover object-center"
           loading="lazy"
+          onError={(e) => {
+            console.error("Failed to load background image:", backgroundImage);
+            e.currentTarget.style.backgroundColor = "hsl(var(--black-silk))";
+          }}
         />
       </div>
 
@@ -78,9 +91,10 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Foreground Decorative Image (Hero only) */}
       {foregroundImage && (
         <div 
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-2/5 z-10 hidden md:block"
+          className="absolute left-0 w-2/5 z-10 hidden md:block"
           style={{
-            transform: `translateY(${-50 + parallaxOffset * 0.3}%)`,
+            top: "50%",
+            transform: `translate3d(0, calc(-50% + ${parallaxOffset * 0.3}px), 0)`,
           }}
         >
           <img
@@ -88,6 +102,10 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             alt="Decorative silk fabric"
             className="w-full h-auto object-contain opacity-90"
             loading="lazy"
+            onError={(e) => {
+              console.error("Failed to load foreground image:", foregroundImage);
+              e.currentTarget.style.display = "none";
+            }}
           />
         </div>
       )}
