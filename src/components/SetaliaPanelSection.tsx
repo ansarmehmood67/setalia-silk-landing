@@ -128,7 +128,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         </div>
       )}
 
-      {/* Content Block */}
+      {/* Content Block - Centered Editorial/Magazine Style */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div 
           className={`text-center px-6 max-w-4xl ${
@@ -136,17 +136,21 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           }`}
         >
           {/* Main Title */}
-          <h1 className="font-display text-6xl md:text-8xl lg:text-9xl text-pure-white text-shadow mb-4">
+          <h1 className={`font-display text-6xl md:text-8xl lg:text-9xl text-shadow mb-6 text-luxury-title ${
+            title === 'SETALIA' 
+              ? 'gradient-setalia' 
+              : 'text-pure-white'
+          }`}>
             {title}
           </h1>
           
           {/* Subtitle */}
-          <p className="font-secondary text-lg md:text-xl text-champagne-gold text-shadow mb-8">
+          <p className="font-secondary text-lg md:text-xl text-champagne-gold text-shadow mb-12 text-luxury-subtitle">
             {subtitle}
           </p>
           
           {/* CTA Button */}
-          <EnquiryButton onClick={onEnquiryClick} />
+          {onEnquiryClick && <EnquiryButton onClick={onEnquiryClick} />}
         </div>
       </div>
     </section>

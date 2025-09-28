@@ -59,6 +59,10 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     --gradient-overlay: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 50%, transparent 100%);
     --shadow-text: 0 2px 8px rgba(0,0,0,0.5);
     --glow-enquiry: 0 0 12px rgba(255,255,255,0.3);
+    
+    /* SETALIA Gradient Effect */
+    --gradient-setalia: linear-gradient(135deg, #ff6b9d 0%, #ffeaa7 40%, #ffffff 100%);
+    --gradient-text-shadow: 0 3px 12px rgba(255, 107, 157, 0.4);
 
     --sidebar-background: 0 0% 98%;
 
@@ -93,7 +97,7 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   /* Typography Classes */
   .font-display {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 300; /* Lighter weight for fashion-magazine feel */
     line-height: 1.05;
     letter-spacing: var(--tracking-display);
     text-transform: uppercase;
@@ -105,6 +109,24 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     line-height: 1.25;
     letter-spacing: var(--tracking-secondary);
     text-transform: uppercase;
+  }
+  
+  /* Gradient Text Classes */
+  .gradient-setalia {
+    background: var(--gradient-setalia);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: var(--gradient-text-shadow);
+  }
+  
+  /* Enhanced Typography Spacing for Fashion-Magazine Feel */
+  .text-luxury-title {
+    letter-spacing: 0.2em; /* +8 tracking for ultimate luxury spacing */
+  }
+  
+  .text-luxury-subtitle {
+    letter-spacing: 0.075em; /* +3 tracking for subtitles */
   }
   
   /* Animation Classes */
