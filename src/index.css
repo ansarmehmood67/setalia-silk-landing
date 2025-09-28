@@ -166,9 +166,19 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   
   /* Zoom Independent Typography - Using Viewport Units */
   .text-fixed-title {
-    font-size: 12vmin !important; /* Truly zoom independent */
+    font-size: 12vmin !important; /* Hero section - larger */
     line-height: 1.05 !important;
     min-font-size: 48px;
+  }
+  
+  .text-fixed-title-secondary {
+    font-size: 8vmin !important; /* Non-hero sections - smaller */
+    line-height: 1.1 !important;
+    min-font-size: 32px;
+    text-align: center !important;
+    word-spacing: 0.1em;
+    text-wrap: balance;
+    hyphens: none;
   }
   
   .text-fixed-subtitle {
@@ -189,7 +199,11 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   /* Responsive breakpoints with viewport-based sizes */
   @media (min-width: 768px) {
     .text-fixed-title {
-      font-size: 14vmin !important; /* Tablet */
+      font-size: 14vmin !important; /* Hero - Tablet */
+    }
+    
+    .text-fixed-title-secondary {
+      font-size: 10vmin !important; /* Non-hero - Tablet */
     }
     
     .text-fixed-subtitle {
@@ -199,8 +213,13 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   
   @media (min-width: 1024px) {
     .text-fixed-title {
-      font-size: 16vmin !important; /* Desktop */
+      font-size: 16vmin !important; /* Hero - Desktop */
       max-font-size: 128px;
+    }
+    
+    .text-fixed-title-secondary {
+      font-size: 12vmin !important; /* Non-hero - Desktop */
+      max-font-size: 96px;
     }
     
     .text-fixed-subtitle {

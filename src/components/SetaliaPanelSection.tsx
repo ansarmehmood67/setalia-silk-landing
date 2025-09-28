@@ -150,7 +150,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           )}
           
           {/* Main Title */}
-          <h1 className="font-display text-fixed-title text-shadow mb-6 text-pure-white">
+          <h1 className={`font-display ${title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"} text-shadow mb-6 text-pure-white`}>
             {title}
           </h1>
           
