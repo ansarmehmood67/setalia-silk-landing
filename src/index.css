@@ -167,15 +167,17 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   /* Red Shadow Effect for First Section */
   .ts-red-shadow-strong {
     text-shadow: 
-      27px -27px 0px rgba(255, 0, 0, 0.36),
-      27px -27px 8px rgba(255, 0, 0, 0.2),
-      0 0 16px rgba(255, 0, 0, 0.1);
+      1px 1px 0px rgba(255, 0, 0, 0.8),
+      2px 2px 2px rgba(255, 0, 0, 0.6),
+      3px 3px 4px rgba(255, 0, 0, 0.4),
+      4px 4px 8px rgba(255, 0, 0, 0.2);
   }
   
   .ts-red-shadow-soft {
     text-shadow: 
-      27px -27px 0px rgba(255, 0, 0, 0.36),
-      27px -27px 6px rgba(255, 0, 0, 0.15);
+      1px 1px 0px rgba(255, 0, 0, 0.6),
+      2px 2px 2px rgba(255, 0, 0, 0.4),
+      3px 3px 6px rgba(255, 0, 0, 0.2);
   }
   
   /* Zoom Independent Typography - Using Viewport Units */
