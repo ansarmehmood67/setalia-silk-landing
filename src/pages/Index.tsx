@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SetaliaPanelSection from "@/components/SetaliaPanelSection";
 import EnquiryModal from "@/components/EnquiryModal";
+import decorativeSun from "@/assets/decorative-sun.png";
 
 // Cloudinary image URLs
 const heroBackground = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928444/card_one_background_flp9ud.png";
@@ -59,6 +60,7 @@ const Index = () => {
         title="COMING SOON"
         subtitle="MADE FOR THE ELITE"
         backgroundImage={heroBackground}
+        decorativeImage={decorativeSun}
         altText="Black silk background with anticipation of luxury launch"
         onEnquiryClick={() => setIsEnquiryModalOpen(true)}
       />

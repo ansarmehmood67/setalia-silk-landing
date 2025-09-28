@@ -6,6 +6,7 @@ interface SetaliaPanelSectionProps {
   subtitle: string;
   backgroundImage: string;
   foregroundImage?: string;
+  decorativeImage?: string;
   altText: string;
   className?: string;
   onEnquiryClick?: () => void;
@@ -16,6 +17,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   subtitle,
   backgroundImage,
   foregroundImage,
+  decorativeImage,
   altText,
   className = "",
   onEnquiryClick,
@@ -135,6 +137,18 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             isVisible ? "swipe-in-left" : "opacity-0"
           }`}
         >
+          {/* Decorative Image */}
+          {decorativeImage && (
+            <div className="mb-8 flex justify-center">
+              <img
+                src={decorativeImage}
+                alt="Decorative element"
+                className="w-20 h-20 md:w-24 md:h-24 object-contain opacity-70"
+                loading="lazy"
+              />
+            </div>
+          )}
+          
           {/* Main Title */}
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-shadow mb-6 text-pure-white">
             {title}
