@@ -136,7 +136,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           }`}
         >
           {/* Main Title */}
-          <h1 className={`font-display text-6xl md:text-8xl lg:text-9xl text-shadow mb-6 text-luxury-title ${
+          <h1 className={`font-display text-5xl md:text-7xl lg:text-8xl text-shadow mb-6 text-luxury-title ${
             title === 'SETALIA' 
               ? 'gradient-setalia' 
               : 'text-pure-white'
