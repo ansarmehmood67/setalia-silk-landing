@@ -143,19 +143,19 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
               <img
                 src={decorativeImage}
                 alt="Decorative element"
-                className="w-20 h-20 md:w-24 md:h-24 object-contain opacity-70"
+                className="decorative-fixed object-contain opacity-70"
                 loading="lazy"
               />
             </div>
           )}
           
           {/* Main Title */}
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-shadow mb-6 text-pure-white">
+          <h1 className="font-display text-fixed-title text-shadow mb-6 text-pure-white">
             {title}
           </h1>
           
           {/* Subtitle */}
-          <p className="font-secondary text-lg md:text-xl text-pure-white text-shadow mb-12 text-luxury-subtitle">
+          <p className="font-secondary text-fixed-subtitle text-pure-white text-shadow mb-12 text-luxury-subtitle">
             {subtitle}
           </p>
           

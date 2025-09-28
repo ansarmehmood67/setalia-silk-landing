@@ -163,4 +163,55 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   .text-shadow {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.4);
   }
+  
+  /* Fixed Pixel Typography - Zoom Independent */
+  .text-fixed-title {
+    font-size: 48px; /* Mobile */
+    line-height: 1.05;
+  }
+  
+  .text-fixed-subtitle {
+    font-size: 18px; /* Mobile */
+    line-height: 1.25;
+  }
+  
+  .text-fixed-button {
+    font-size: 14px;
+    height: 48px;
+    line-height: 1;
+  }
+  
+  /* Responsive breakpoints with fixed pixel sizes */
+  @media (min-width: 768px) {
+    .text-fixed-title {
+      font-size: 112px; /* Tablet */
+    }
+    
+    .text-fixed-subtitle {
+      font-size: 20px; /* Tablet */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .text-fixed-title {
+      font-size: 128px; /* Desktop */
+    }
+    
+    .text-fixed-subtitle {
+      font-size: 24px; /* Desktop */
+    }
+  }
+  
+  /* Fixed decorative image sizes */
+  .decorative-fixed {
+    width: 80px;
+    height: 80px;
+  }
+  
+  @media (min-width: 768px) {
+    .decorative-fixed {
+      width: 96px;
+      height: 96px;
+    }
+  }
 }
