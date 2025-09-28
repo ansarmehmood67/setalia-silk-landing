@@ -22,19 +22,39 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
 
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          if (sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Calculate how much the section has moved through the viewport
+            // When section is entering from bottom: rect.top = windowHeight, progress = 0
+            // When section is centered: rect.top = 0, progress = 0.5
+            // When section is exiting from top: rect.top = -windowHeight, progress = 1
+            const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+            
+            // Only apply parallax when section is in or near viewport
+            if (progress >= -0.1 && progress <= 1.1) {
+              // Convert progress to parallax offset (more subtle movement)
+              const offset = (progress - 0.5) * 100; // Range: -50px to +50px
+              setParallaxOffset(offset);
+            }
+          }
           ticking = false;
         });
         ticking = true;
       }
     };
+    
+    // Initial calculation
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -55,8 +75,6 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
 
     return () => observer.disconnect();
   }, []);
-
-  const parallaxOffset = scrollY * 0.5;
 
   return (
     <section
