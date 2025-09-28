@@ -161,6 +161,6 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   
   /* Text Shadow for Legibility */
   .text-shadow {
-    text-shadow: var(--shadow-text);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.4);
   }
 }
