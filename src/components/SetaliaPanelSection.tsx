@@ -148,12 +148,12 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       <div 
         className={`absolute inset-0 flex z-20 ${
           isMobile && foregroundImage 
-            ? 'flex-col justify-between items-center py-8 pb-[25vh]' 
+            ? 'flex-col justify-between items-center py-8' 
             : 'items-center justify-center'
         }`}
         style={{
           paddingBottom: isMobile && foregroundImage 
-            ? 'clamp(20vh, calc(100vh - 500px), 30vh)' 
+            ? 'clamp(8vh, calc(100vh - 600px), 15vh)' 
             : undefined
         }}
       >
