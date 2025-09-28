@@ -25,6 +25,19 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    handleResize();
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -102,20 +115,14 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         />
       </div>
 
-      {/* Text Background - Only for Hero Section */}
-      {title === "SETALIA" && (
-        <div className="absolute inset-0 flex items-center justify-center z-15">
-          <div className="absolute w-full max-w-4xl h-96 bg-black/20 backdrop-blur-sm rounded-lg" />
-        </div>
-      )}
 
       {/* Foreground Decorative Image (Hero only) */}
       {foregroundImage && (
         <div 
-          className="absolute left-1/2 w-4/5 bottom-0 md:left-12 md:w-2/5 md:bottom-auto z-10"
+          className="absolute left-1/2 w-5/6 bottom-0 md:left-12 md:w-2/5 md:bottom-auto z-10"
           style={{
-            top: window.innerWidth >= 768 ? "50%" : "auto",
-            transform: window.innerWidth >= 768 
+            top: !isMobile ? "50%" : "auto",
+            transform: !isMobile 
               ? `translate3d(0, calc(-50% + ${parallaxOffset * 0.2}px), 0)`
               : `translate3d(-50%, 0, 0)`,
           }}
@@ -137,7 +144,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Content Block - Centered Editorial/Magazine Style */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div 
-          className={`text-center px-6 max-w-4xl ${
+          className={`text-center px-6 max-w-4xl pb-24 md:pb-0 ${
             isVisible ? "swipe-in-left" : "opacity-0"
           }`}
         >
