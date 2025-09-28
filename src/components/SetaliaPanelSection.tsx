@@ -112,7 +112,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Foreground Decorative Image (Hero only) */}
       {foregroundImage && (
         <div 
-          className="absolute left-12 w-2/5 z-10 hidden md:block"
+          className="absolute left-4 w-3/5 md:left-12 md:w-2/5 z-10"
           style={{
             top: "50%",
             transform: `translate3d(0, calc(-50% + ${parallaxOffset * 0.3}px), 0)`,
