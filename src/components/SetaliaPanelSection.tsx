@@ -153,7 +153,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         }`}
         style={{
           paddingBottom: isMobile && foregroundImage 
-            ? 'clamp(8vh, calc(100vh - 600px), 15vh)' 
+            ? 'clamp(2vh, calc(100vh - 700px), 6vh)' 
             : undefined
         }}
       >
