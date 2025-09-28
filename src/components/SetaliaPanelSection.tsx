@@ -102,16 +102,17 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         />
       </div>
 
-      {/* Gradient Overlay */}
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-black/35 to-transparent"
-        style={{ background: "var(--gradient-overlay)" }}
-      />
+      {/* Text Background - Only for Hero Section */}
+      {title === "SETALIA" && (
+        <div className="absolute inset-0 flex items-center justify-center z-15">
+          <div className="absolute w-full max-w-4xl h-96 bg-black/20 backdrop-blur-sm rounded-lg" />
+        </div>
+      )}
 
       {/* Foreground Decorative Image (Hero only) */}
       {foregroundImage && (
         <div 
-          className="absolute left-0 w-2/5 z-10 hidden md:block"
+          className="absolute left-12 w-2/5 z-10 hidden md:block"
           style={{
             top: "50%",
             transform: `translate3d(0, calc(-50% + ${parallaxOffset * 0.3}px), 0)`,
@@ -120,7 +121,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           <img
             src={foregroundImage}
             alt="Decorative silk fabric"
-            className="w-full h-auto object-contain opacity-90"
+            className="w-full h-auto object-contain"
             loading="lazy"
             onError={(e) => {
               console.error("Failed to load foreground image:", foregroundImage);
