@@ -94,7 +94,10 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   return (
     <section
       ref={sectionRef}
-      className={`relative h-screen w-full overflow-hidden ${className}`}
+      className={`relative h-[100dvh] h-screen w-full overflow-hidden ${className}`}
+      style={{
+        minHeight: isMobile ? 'calc(100vh - env(safe-area-inset-bottom, 0px))' : '100vh'
+      }}
     >
       {/* Background Image with Parallax */}
       <div 
@@ -142,11 +145,22 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       )}
 
       {/* Content Block - Centered Editorial/Magazine Style */}
-      <div className="absolute inset-0 flex items-center justify-center z-20">
+      <div 
+        className={`absolute inset-0 flex z-20 ${
+          isMobile && foregroundImage 
+            ? 'flex-col justify-between items-center py-8 pb-[25vh]' 
+            : 'items-center justify-center'
+        }`}
+        style={{
+          paddingBottom: isMobile && foregroundImage 
+            ? 'clamp(20vh, calc(100vh - 500px), 30vh)' 
+            : undefined
+        }}
+      >
         <div 
-          className={`text-center px-6 max-w-4xl pb-24 md:pb-0 ${
+          className={`text-center px-6 max-w-4xl ${
             isVisible ? "swipe-in-left" : "opacity-0"
-          }`}
+          } ${isMobile && foregroundImage ? 'flex-shrink-0' : ''}`}
         >
           {/* Decorative Image */}
           {decorativeImage && (
