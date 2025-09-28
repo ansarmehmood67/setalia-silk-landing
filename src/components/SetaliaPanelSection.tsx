@@ -112,17 +112,18 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Foreground Decorative Image (Hero only) */}
       {foregroundImage && (
         <div 
-          className="absolute left-4 w-3/5 md:left-12 md:w-2/5 z-10"
+          className="absolute left-1/2 w-4/5 md:left-12 md:w-2/5 z-10"
           style={{
             top: "50%",
-            transform: `translate3d(0, calc(-50% + ${parallaxOffset * 0.3}px), 0)`,
+            transform: `translate3d(-50%, calc(-50% + ${parallaxOffset * 0.2}px), 0)`,
           }}
         >
           <img
             src={foregroundImage}
             alt="Decorative silk fabric"
-            className="w-full h-auto object-contain"
+            className="w-full h-auto object-contain opacity-80 md:opacity-100"
             loading="lazy"
+            onLoad={() => console.log("Foreground image loaded successfully")}
             onError={(e) => {
               console.error("Failed to load foreground image:", foregroundImage);
               e.currentTarget.style.display = "none";
