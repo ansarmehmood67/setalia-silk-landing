@@ -164,41 +164,48 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.4);
   }
   
-  /* Fixed Pixel Typography - Zoom Independent */
+  /* Zoom Independent Typography - Using Viewport Units */
   .text-fixed-title {
-    font-size: 48px; /* Mobile */
-    line-height: 1.05;
+    font-size: 12vmin !important; /* Truly zoom independent */
+    line-height: 1.05 !important;
+    min-font-size: 48px;
   }
   
   .text-fixed-subtitle {
-    font-size: 18px; /* Mobile */
-    line-height: 1.25;
+    font-size: 4.5vmin !important; /* Truly zoom independent */
+    line-height: 1.25 !important;
+    min-font-size: 18px;
   }
   
-  .text-fixed-button {
-    font-size: 14px;
-    height: 48px;
-    line-height: 1;
+  /* Dedicated Button Class - Zoom Independent */
+  .button-fixed {
+    height: 48px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
   }
   
-  /* Responsive breakpoints with fixed pixel sizes */
+  /* Responsive breakpoints with viewport-based sizes */
   @media (min-width: 768px) {
     .text-fixed-title {
-      font-size: 112px; /* Tablet */
+      font-size: 14vmin !important; /* Tablet */
     }
     
     .text-fixed-subtitle {
-      font-size: 20px; /* Tablet */
+      font-size: 5vmin !important; /* Tablet */
     }
   }
   
   @media (min-width: 1024px) {
     .text-fixed-title {
-      font-size: 128px; /* Desktop */
+      font-size: 16vmin !important; /* Desktop */
+      max-font-size: 128px;
     }
     
     .text-fixed-subtitle {
-      font-size: 24px; /* Desktop */
+      font-size: 5.5vmin !important; /* Desktop */
+      max-font-size: 24px;
     }
   }
   

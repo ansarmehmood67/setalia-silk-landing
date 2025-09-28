@@ -12,7 +12,7 @@ const EnquiryButton = React.forwardRef<HTMLButtonElement, EnquiryButtonProps>(
         className={cn(
           // Ultra-minimal luxury button styles
           "inline-flex items-center justify-center",
-          "text-fixed-button px-8", // Fixed 48px height, generous padding
+          "button-fixed", // Dedicated button class with proper height
           "border border-pure-white/60 bg-transparent", // Ultra-thin 1px border
           "text-pure-white font-secondary font-light uppercase",
           "tracking-[0.075em]", // Wide letter spacing maintained
