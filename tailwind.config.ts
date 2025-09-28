@@ -57,6 +57,11 @@ export default {
         display: "var(--font-display)",
         secondary: "var(--font-secondary)",
       },
+      fontSize: {
+        '10xl': ['10rem', { lineHeight: '1', letterSpacing: '0.3em' }],
+        '11xl': ['12rem', { lineHeight: '0.9', letterSpacing: '0.3em' }],
+        '12xl': ['14rem', { lineHeight: '0.8', letterSpacing: '0.3em' }],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

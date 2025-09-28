@@ -50,15 +50,18 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     --font-display: 'Bodoni Moda', 'Playfair Display', serif;
     --font-secondary: 'Montserrat', sans-serif;
     
-    /* Luxury Spacing */
-    --tracking-display: 0.2em; /* +8 tracking */
-    --tracking-secondary: 0.125em; /* +4 tracking */
+    /* Luxury Spacing - Enhanced for Client Design */
+    --tracking-display: 0.3em; /* +12 tracking - more dramatic */
+    --tracking-secondary: 0.15em; /* +6 tracking - improved */
     --tracking-button: 0.075em; /* +2 tracking */
     
-    /* Gradients & Effects */
+    /* Gradients & Effects - Enhanced */
     --gradient-overlay: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 50%, transparent 100%);
-    --shadow-text: 0 2px 8px rgba(0,0,0,0.5);
+    --gradient-setalia: linear-gradient(135deg, hsl(var(--champagne-gold)) 0%, hsl(var(--champagne-gold-bright)) 50%, hsl(var(--pure-white)) 100%);
+    --shadow-text: 0 4px 12px rgba(0,0,0,0.8);
+    --shadow-text-strong: 0 6px 20px rgba(0,0,0,0.9);
     --glow-enquiry: 0 0 12px rgba(255,255,255,0.3);
+    --glow-gold: 0 0 20px rgba(255, 223, 186, 0.4);
 
     --sidebar-background: 0 0% 98%;
 
@@ -90,11 +93,11 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     font-family: var(--font-secondary);
   }
   
-  /* Typography Classes */
+  /* Typography Classes - Enhanced for Client Design */
   .font-display {
     font-family: var(--font-display);
     font-weight: 400;
-    line-height: 1.05;
+    line-height: 0.95;
     letter-spacing: var(--tracking-display);
     text-transform: uppercase;
   }
@@ -105,6 +108,20 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     line-height: 1.25;
     letter-spacing: var(--tracking-secondary);
     text-transform: uppercase;
+  }
+  
+  /* Special Gradient Text Effect for SETALIA */
+  .gradient-setalia {
+    background: var(--gradient-setalia);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none; /* Gradient text doesn't work with text-shadow */
+  }
+  
+  /* Enhanced Text Shadows */
+  .text-shadow-strong {
+    text-shadow: var(--shadow-text-strong);
   }
   
   /* Animation Classes */

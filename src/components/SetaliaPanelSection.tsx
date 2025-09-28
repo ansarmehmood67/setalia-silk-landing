@@ -106,10 +106,10 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         style={{ background: "var(--gradient-overlay)" }}
       />
 
-      {/* Foreground Decorative Image (Hero only) */}
+      {/* Foreground Decorative Image (Hero only) - Repositioned to Left */}
       {foregroundImage && (
         <div 
-          className="absolute left-0 w-2/5 z-10 hidden md:block"
+          className="absolute left-0 w-1/3 z-10 hidden md:block"
           style={{
             top: "50%",
             transform: `translate3d(0, calc(-50% + ${parallaxOffset * 0.3}px), 0)`,
@@ -118,7 +118,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           <img
             src={foregroundImage}
             alt="Decorative silk fabric"
-            className="w-full h-auto object-contain opacity-90"
+            className="w-full h-auto object-contain opacity-95"
             loading="lazy"
             onError={(e) => {
               console.error("Failed to load foreground image:", foregroundImage);
@@ -128,20 +128,26 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         </div>
       )}
 
-      {/* Content Block */}
-      <div className="absolute inset-0 flex items-center justify-center z-20">
+      {/* Content Block - Repositioned for Hero Layout */}
+      <div className={`absolute inset-0 flex items-center z-20 ${
+        foregroundImage ? 'justify-end pr-20' : 'justify-center'
+      }`}>
         <div 
-          className={`text-center px-6 max-w-4xl ${
-            isVisible ? "swipe-in-left" : "opacity-0"
-          }`}
+          className={`px-6 max-w-4xl ${
+            foregroundImage ? 'text-left' : 'text-center'
+          } ${isVisible ? "swipe-in-left" : "opacity-0"}`}
         >
-          {/* Main Title */}
-          <h1 className="font-display text-6xl md:text-8xl lg:text-9xl text-pure-white text-shadow mb-4">
+          {/* Main Title with Gradient Effect for SETALIA */}
+          <h1 className={`font-display text-7xl md:text-9xl lg:text-[12rem] mb-6 leading-none ${
+            title === 'SETALIA' 
+              ? 'gradient-setalia' 
+              : 'text-pure-white text-shadow-strong'
+          }`}>
             {title}
           </h1>
           
           {/* Subtitle */}
-          <p className="font-secondary text-lg md:text-xl text-champagne-gold text-shadow mb-8">
+          <p className="font-secondary text-xl md:text-2xl lg:text-3xl text-champagne-gold-bright text-shadow-strong mb-12 max-w-2xl">
             {subtitle}
           </p>
           
