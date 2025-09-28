@@ -47,16 +47,15 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+        // SETALIA Brand Colors
+        "black-silk": "hsl(var(--black-silk))",
+        "pure-white": "hsl(var(--pure-white))",
+        "champagne-gold": "hsl(var(--champagne-gold))",
+        "champagne-gold-bright": "hsl(var(--champagne-gold-bright))",
+      },
+      fontFamily: {
+        display: "var(--font-display)",
+        secondary: "var(--font-secondary)",
       },
       borderRadius: {
         lg: "var(--radius)",
