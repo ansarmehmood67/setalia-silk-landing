@@ -28,13 +28,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Initial check
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
-    
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -47,17 +42,9 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           if (sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            
-            // Calculate how much the section has moved through the viewport
-            // When section is entering from bottom: rect.top = windowHeight, progress = 0
-            // When section is centered: rect.top = 0, progress = 0.5
-            // When section is exiting from top: rect.top = -windowHeight, progress = 1
             const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-            
-            // Only apply parallax when section is in or near viewport
             if (progress >= -0.1 && progress <= 1.1) {
-              // Convert progress to parallax offset (more subtle movement)
-              const offset = (progress - 0.5) * 100; // Range: -50px to +50px
+              const offset = (progress - 0.5) * 100; // -50..+50
               setParallaxOffset(offset);
             }
           }
@@ -66,45 +53,31 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         ticking = true;
       }
     };
-    
-    // Initial calculation
     handleScroll();
-    
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setIsVisible(true);
+    }, { threshold: 0.3 });
+    if (sectionRef.current) obs.observe(sectionRef.current);
+    return () => obs.disconnect();
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className={`relative h-[100dvh] h-screen w-full overflow-hidden ${className}`}
+      className={`relative h-[100dvh] w-full overflow-hidden panel-gradient ${className}`}
       style={{
-        minHeight: isMobile ? 'calc(100vh - env(safe-area-inset-bottom, 0px))' : '100vh'
+        minHeight: isMobile ? "calc(100vh - env(safe-area-inset-bottom, 0px))" : "100vh",
       }}
     >
-      {/* Background Image with Parallax */}
-      <div 
-        className="absolute inset-0 parallax-bg"
-        style={{
-          transform: `translate3d(0, ${parallaxOffset}px, 0)`,
-        }}
+      {/* Background with parallax */}
+      <div
+        className="absolute inset-0"
+        style={{ transform: `translate3d(0, ${parallaxOffset}px, 0)` }}
       >
         <img
           src={backgroundImage}
@@ -112,79 +85,67 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           className="w-full min-h-full object-cover object-center"
           loading="lazy"
           onError={(e) => {
-            console.error("Failed to load background image:", backgroundImage);
-            e.currentTarget.style.backgroundColor = "hsl(var(--black-silk))";
+            console.error("Failed to load background:", backgroundImage);
+            e.currentTarget.style.backgroundColor = "#000";
           }}
         />
       </div>
 
-
-      {/* Foreground Decorative Image (Hero only) */}
+      {/* Foreground (model) — anchored bottom on mobile, center-left on desktop */}
       {foregroundImage && (
-        <div 
-          className="absolute left-1/2 w-5/6 bottom-0 md:left-12 md:w-2/5 md:bottom-auto z-10"
+        <img
+          src={foregroundImage}
+          alt="Decorative foreground"
+          className={
+            // Mobile: bottom-center to eliminate awkward gap
+            // Desktop: left column, vertically centered
+            `pointer-events-none select-none z-10
+             absolute ${isMobile
+                ? "bottom-0 left-1/2 -translate-x-1/2 w-[68%] max-w-[360px]"
+                : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
+          }
           style={{
-            top: !isMobile ? "50%" : "auto",
-            transform: !isMobile 
-              ? `translate3d(0, calc(-50% + ${parallaxOffset * 0.2}px), 0)`
-              : `translate3d(-50%, 0, 0)`,
+            transform: isMobile
+              ? "translateX(-50%)"
+              : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
+            opacity: isMobile ? 0.9 : 1,
           }}
-        >
-          <img
-            src={foregroundImage}
-            alt="Decorative silk fabric"
-            className="w-full h-auto object-contain opacity-80 md:opacity-100"
-            loading="lazy"
-            onLoad={() => console.log("Foreground image loaded successfully")}
-            onError={(e) => {
-              console.error("Failed to load foreground image:", foregroundImage);
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        </div>
+          loading="lazy"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+        />
       )}
 
-      {/* Content Block - Centered Editorial/Magazine Style */}
-      <div 
-        className={`absolute inset-0 flex z-20 ${
-          isMobile && foregroundImage 
-            ? 'flex-col justify-between items-center py-8' 
-            : 'items-center justify-center'
-        }`}
-        style={{
-          paddingBottom: isMobile && foregroundImage 
-            ? 'clamp(2vh, calc(100vh - 700px), 6vh)' 
-            : undefined
-        }}
+      {/* Content */}
+      <div
+        className={`absolute inset-0 z-20
+          ${isMobile ? "flex items-center justify-center pb-14" : "grid place-items-center"}
+        `}
       >
-        <div 
-          className={`text-center px-6 max-w-4xl ${
-            isVisible ? "swipe-in-left" : "opacity-0"
-          } ${isMobile && foregroundImage ? 'flex-shrink-0' : ''}`}
+        <div
+          className={`text-center px-6 max-w-4xl
+            ${isVisible ? "swipe-in-left" : "opacity-0"}`}
         >
-          {/* Decorative Image */}
+          {/* Decorative top mark (optional) */}
           {decorativeImage && (
-            <div className="mb-8 flex justify-center">
-              <img
-                src={decorativeImage}
-                alt="Decorative element"
-                className="decorative-fixed object-contain opacity-70"
-                loading="lazy"
-              />
+            <div className="mb-6 flex justify-center">
+              <img src={decorativeImage} alt="" className="max-h-10 opacity-70" />
             </div>
           )}
-          
-          {/* Main Title */}
-          <h1 className={`font-display ${title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"} text-shadow mb-6 text-pure-white`}>
+
+          {/* Title with strong shadow like Canva */}
+          <h1
+            className={`font-display ${title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"}
+                        ts-strong text-pure-white mb-4 tracking-[0.18em]`}
+          >
             {title}
           </h1>
-          
-          {/* Subtitle */}
-          <p className="font-secondary text-fixed-subtitle text-pure-white text-shadow mb-12 text-luxury-subtitle">
+
+          {/* Subtitle with softer shadow */}
+          <p className="font-secondary text-fixed-subtitle ts-soft text-pure-white mb-8 tracking-[0.08em] uppercase">
             {subtitle}
           </p>
-          
-          {/* CTA Button */}
+
+          {/* CTA */}
           {onEnquiryClick && <EnquiryButton onClick={onEnquiryClick} />}
         </div>
       </div>
