@@ -17,8 +17,8 @@ interface SetaliaPanelSectionProps {
 const MAX_SHIFT_PX = 200;        // total movement clamp (40–100)
 const SMOOTH = 0.12;            // lerp factor (0.08–0.18)
 const BG_SPEED = 0.35;          // background depth
-const FG_SPEED_MOBILE = 0.18;   // foreground depth on mobile (hero)
-const FG_SPEED_DESK = 0.10;     // foreground depth on desktop (non-hero)
+const FG_SPEED_MOBILE = 0.24;   // foreground depth on mobile (hero)
+const FG_SPEED_DESK = 0.12;     // foreground depth on desktop (non-hero)
 const TEXT_SPEED = -0.06;       // subtle counter-move for text on desktop
 
 const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
