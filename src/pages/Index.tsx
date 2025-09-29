@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SetaliaPanelSection from "@/components/SetaliaPanelSection";
 import EnquiryModal from "@/components/EnquiryModal";
+import Header from "@/components/Header";
 import decorativeSun from "@/assets/decorative-sun.png";
 
 // Cloudinary image URLs
@@ -17,6 +18,9 @@ const Index = () => {
     <main className="relative">
       {/* SEO Hidden H1 */}
       <h1 className="sr-only">Setalia — Luxury Italian Fabric</h1>
+      
+      {/* Header */}
+      <Header onEnquiryClick={() => setIsEnquiryModalOpen(true)} />
       
       {/* Hero Section */}
       <SetaliaPanelSection
