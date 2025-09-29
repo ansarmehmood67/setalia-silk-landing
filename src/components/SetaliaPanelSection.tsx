@@ -107,7 +107,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             (title === "SETALIA" && isMobile
               ? "inset-0 w-full h-full object-cover object-center"
               : title === "SETALIA" && !isMobile
-              ? "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+              ? "left-60 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
               : isMobile
               ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
               : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]")
