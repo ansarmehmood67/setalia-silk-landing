@@ -123,7 +123,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       <div
         className={`absolute inset-0 z-20
           ${isMobile 
-            ? "flex items-center justify-center pb-24" 
+            ? "flex items-center justify-center pb-36" 
             : title === "SETALIA" 
               ? "grid justify-items-center items-end pb-16"
               : "grid place-items-center"}
