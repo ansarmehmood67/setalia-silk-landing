@@ -13,6 +13,14 @@ interface SetaliaPanelSectionProps {
   dimBackground?: boolean;
 }
 
+/* ===== Parallax tuning knobs ===== */
+const MAX_SHIFT_PX = 200;        // total movement clamp (40–100)
+const SMOOTH = 0.12;            // lerp factor (0.08–0.18)
+const BG_SPEED = 0.35;          // background depth
+const FG_SPEED_MOBILE = 0.18;   // foreground depth on mobile (hero)
+const FG_SPEED_DESK = 0.10;     // foreground depth on desktop (non-hero)
+const TEXT_SPEED = -0.06;       // subtle counter-move for text on desktop
+
 const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   title,
   subtitle,
@@ -26,9 +34,14 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
+  // smoothed parallax value
+  const [parallaxY, setParallaxY] = useState(0);
+  const targetRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+
+  // detect mobile
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -36,36 +49,43 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // premium parallax: clamp + lerp + respects reduced motion
   useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (sectionRef.current) {
-            const rect = sectionRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const progress =
-              (windowHeight - rect.top) / (windowHeight + rect.height);
-            if (progress >= -0.1 && progress <= 1.1) {
-              const offset = (progress - 0.5) * 100; // -50..+50
-              setParallaxOffset(offset);
-            }
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+    const prefersReduced =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+
+    const onScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = (vh - rect.top) / (vh + rect.height); // ~[-0.1..1.1]
+      const raw = (progress - 0.5) * 2; // [-1..+1]
+      const clamped = Math.max(-1, Math.min(1, raw));
+      targetRef.current = prefersReduced ? 0 : clamped * MAX_SHIFT_PX;
     };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const tick = () => {
+      setParallaxY(prev => {
+        const next = prev + (targetRef.current - prev) * SMOOTH;
+        return Math.abs(next - prev) < 0.1 ? targetRef.current : next;
+      });
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
+  // entrance
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
+      ([entry]) => entry.isIntersecting && setIsVisible(true),
       { threshold: 0.3 }
     );
     if (sectionRef.current) obs.observe(sectionRef.current);
@@ -82,10 +102,13 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           : "100vh",
       }}
     >
-      {/* Background with parallax */}
+      {/* Background with smoothed parallax */}
       <div
         className="absolute inset-0"
-        style={{ transform: `translate3d(0, ${parallaxOffset}px, 0)` }}
+        style={{
+          transform: `translate3d(0, ${parallaxY * BG_SPEED}px, 0)`,
+          willChange: "transform",
+        }}
       >
         <img
           src={backgroundImage}
@@ -94,18 +117,17 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           loading="lazy"
           onError={(e) => {
             console.error("Failed to load background:", backgroundImage);
-            e.currentTarget.style.backgroundColor = "#000";
+            (e.currentTarget as HTMLImageElement).style.backgroundColor = "#000";
           }}
         />
       </div>
 
-      {/* ⭐ NEW — subtle overlay ONLY when dimBackground is true.
-          Z-index is between background (0) and foreground (10), so the model (if any) stays crisp. */}
+      {/* Optional dim overlay for bright sections */}
       {dimBackground && (
         <div className="absolute inset-0 z-[5] pointer-events-none bg-gradient-to-t from-black/55 via-black/35 to-black/20" />
       )}
 
-      {/* Foreground (model) — full screen on hero, positioned on others */}
+      {/* Foreground (model) */}
       {foregroundImage && (
         <img
           src={foregroundImage}
@@ -115,33 +137,33 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             (title === "SETALIA" && isMobile
               ? "inset-0 w-full h-full object-cover object-center"
               : title === "SETALIA" && !isMobile
+              // hero desktop anchored to bottom; horizontal offset with vw
               ? "left-[20vw] bottom-0 translate-y-0 w-[38%] max-w-[620px]"
               : isMobile
               ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
               : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]")
           }
           style={{
-            // parallax/y-centering
             transform:
               title === "SETALIA" && isMobile
-                ? `translateY(${parallaxOffset * 0.2}px)`
+                ? `translateY(${parallaxY * FG_SPEED_MOBILE}px)` // hero mobile
                 : title === "SETALIA" && !isMobile
-                ? "translateY(0)"
+                ? "translateY(0)" // hero desktop fixed to bottom
                 : isMobile
                 ? "translateX(-50%)"
-                : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
+                : `translateY(calc(-50% + ${parallaxY * FG_SPEED_DESK}px))`, // other sections desktop
             opacity: title === "SETALIA" && isMobile ? 0.8 : isMobile ? 0.9 : 1,
-
-            // ✅ Mobile-only: nudge the HERO image crop a bit to the right
+            // Mobile-only crop nudge for hero
             objectPosition:
               title === "SETALIA" && isMobile ? "45% center" : undefined,
+            willChange: "transform",
           }}
           loading="lazy"
-          onError={(e) => (e.currentTarget.style.display = "none")}
+          onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = "none")}
         />
       )}
 
-      {/* Subtle overlay for hero section text readability */}
+      {/* Existing hero text readability overlay */}
       {title === "SETALIA" && (
         <div className="absolute inset-0 z-15 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       )}
@@ -157,7 +179,6 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
               : "grid place-items-center"
           }
         `}
-        // ✅ Mobile-only: place content ~62% down so it doesn't cover the face
         style={
           isMobile
             ? {
@@ -167,15 +188,19 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
                 left: 0,
                 right: 0,
               }
-            : {}
+            : undefined
         }
       >
+        {/* Inner wrapper: apply subtle counter parallax to text on desktop only */}
         <div
           className={`text-center px-6 max-w-4xl ${
             isVisible ? "swipe-in-left" : "opacity-0"
           }`}
+          style={{
+            transform: !isMobile ? `translateY(${parallaxY * TEXT_SPEED}px)` : undefined,
+            willChange: !isMobile ? "transform" : undefined,
+          }}
         >
-          {/* Decorative top mark (optional) */}
           {decorativeImage && (
             <div className="mb-8 flex justify-center">
               <img
@@ -186,7 +211,6 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             </div>
           )}
 
-          {/* Title */}
           <h1
             className={`font-display ${
               title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"
@@ -197,7 +221,6 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             {title}
           </h1>
 
-          {/* Subtitle */}
           <p
             className={`font-secondary text-fixed-subtitle ${
               title === "SETALIA" ? "ts-red-shadow-soft" : "ts-soft"
@@ -206,7 +229,6 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             {subtitle}
           </p>
 
-          {/* CTA */}
           {onEnquiryClick && <EnquiryButton onClick={onEnquiryClick} />}
         </div>
       </div>
