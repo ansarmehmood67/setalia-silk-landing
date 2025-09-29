@@ -135,8 +135,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         >
           {/* Decorative top mark (optional) */}
           {decorativeImage && (
-            <div className="mb-6 flex justify-center">
-              <img src={decorativeImage} alt="" className="max-h-10 opacity-70" />
+            <div className="mb-8 flex justify-center">
+              <img src={decorativeImage} alt="" className="max-h-16 md:max-h-20 opacity-80" />
             </div>
           )}
 
