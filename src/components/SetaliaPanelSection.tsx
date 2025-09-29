@@ -36,55 +36,43 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Professional parallax with visible depth effects
+  // Fixed parallax with direct scroll calculation
   useEffect(() => {
     let animationFrameId: number;
-    let currentY = 0;
-    let targetY = 0;
     
     const handleScroll = () => {
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
-        // Calculate smooth progress (0 to 1) through viewport
-        const progress = Math.max(0, Math.min(1, 
-          (windowHeight - rect.top) / (windowHeight + rect.height)
-        ));
+        // Simple, direct calculation: how much of the section is visible
+        const elementCenter = rect.top + rect.height / 2;
+        const screenCenter = windowHeight / 2;
+        const distance = elementCenter - screenCenter;
         
-        // Professional parallax with clearly visible movement
-        // Background: ±80px max, Foreground: ±40px max
-        const normalizedProgress = (progress - 0.5) * 2; // -1 to 1
+        // Direct parallax: scroll distance affects movement
+        // Larger movement ranges for visible effect
+        const movement = isMobile ? distance * 0.15 : distance * 0.3;
         
-        // Add subtle sine wave for organic movement
-        const sineEase = Math.sin(normalizedProgress * Math.PI * 0.5) * normalizedProgress;
+        // Clamp to reasonable bounds
+        const clampedMovement = Math.max(-150, Math.min(150, movement));
         
-        targetY = sineEase * (isMobile ? 25 : 80);
+        console.log('Parallax movement:', clampedMovement, 'Element distance:', distance);
+        setParallaxY(clampedMovement);
       }
     };
     
     const smoothUpdate = () => {
-      // Luxury easing: smooth as silk, no stuttering
-      const ease = 0.12;
-      currentY += (targetY - currentY) * ease;
-      
-      // Only update state if change is meaningful (prevents unnecessary renders)
-      if (Math.abs(currentY - parallaxY) > 0.01) {
-        setParallaxY(currentY);
-      }
-      
+      handleScroll();
       animationFrameId = requestAnimationFrame(smoothUpdate);
     };
     
-    handleScroll();
     smoothUpdate();
-    window.addEventListener("scroll", handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [parallaxY, isMobile]);
+  }, [isMobile]);
 
   useEffect(() => {
     const obs = new IntersectionObserver(([entry]) => {
