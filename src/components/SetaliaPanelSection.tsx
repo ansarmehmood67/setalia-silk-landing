@@ -22,6 +22,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   className = "",
   onEnquiryClick,
 }) => {
+  // Debug: Ensure new code is loaded
+  console.log('SetaliaPanelSection: Using parallaxY variable');
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [parallaxY, setParallaxY] = useState(0);
