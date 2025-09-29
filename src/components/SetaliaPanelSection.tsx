@@ -97,22 +97,26 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           src={foregroundImage}
           alt="Decorative foreground"
           className={
-            // Hero section: full screen coverage
+            // Hero section: full screen on mobile, positioned on desktop
             // Other sections: maintain original positioning
             `pointer-events-none select-none z-10
-             absolute ${title === "SETALIA"
+             absolute ${title === "SETALIA" && isMobile
                 ? "inset-0 w-full h-full object-cover object-center"
+              : title === "SETALIA" && !isMobile
+                ? "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
               : isMobile
                 ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
                 : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
           }
           style={{
-            transform: title === "SETALIA" 
+            transform: title === "SETALIA" && isMobile
               ? `translateY(${parallaxOffset * 0.2}px)`
+              : title === "SETALIA" && !isMobile
+                ? `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`
               : isMobile
                 ? "translateX(-50%)"
                 : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
-            opacity: title === "SETALIA" ? 0.8 : (isMobile ? 0.9 : 1),
+            opacity: title === "SETALIA" && isMobile ? 0.8 : (isMobile ? 0.9 : 1),
           }}
           loading="lazy"
           onError={(e) => (e.currentTarget.style.display = "none")}
