@@ -10,31 +10,31 @@ const Header = ({ onEnquiryClick }: HeaderProps) => {
   return (
     <header
       className="
-        absolute top-0 left-0 right-0 z-50 
-        py-2 md:py-4        /* more vertical breathing room on desktop */
+        absolute top-0 left-0 right-0 z-50
+        pt-[env(safe-area-inset-top)] py-2 md:py-4
       "
     >
       <div className="flex items-center justify-between px-4 md:px-10">
-        {/* Logo */}
+        {/* Logo (bigger on mobile + bigger on desktop) */}
         <div className="flex items-center">
           <img
             src={setalieLogo}
             alt="Setalia Logo"
             className="
-              h-16                /* mobile size */
-              md:h-28             /* slightly bigger on desktop */
+              h-20          /* ↑ bigger on mobile */
+              md:h-32       /* ↑ bigger on desktop */
               w-auto
             "
           />
         </div>
 
-        {/* Enquiry Button */}
+        {/* Enquiry Button (smaller on mobile) */}
         <div className="flex items-center">
           <EnquiryButton
             onClick={onEnquiryClick}
             className="
-              text-[11px] px-2 py-1    /* smaller on mobile */
-              md:text-xs md:px-4 md:py-2
+              text-[11px] px-2 py-1       /* compact on mobile */
+              md:text-xs md:px-4 md:py-2  /* normal on desktop */
             "
           />
         </div>
