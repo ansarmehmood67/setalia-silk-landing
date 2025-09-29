@@ -103,7 +103,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
              absolute ${isMobile
                 ? "bottom-0 left-1/2 -translate-x-1/2 w-[68%] max-w-[360px]"
               : title === "SETALIA" 
-                  ? "left-[45%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+                  ? "left-[35%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
                   : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
           }
           style={{
