@@ -182,7 +182,7 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   
   /* Zoom Independent Typography - Using Viewport Units */
   .text-fixed-title {
-    font-size: 15vmin !important; /* Hero section - larger for mobile */
+    font-size: 12vmin !important; /* Hero section - larger */
     line-height: 1.05 !important;
     min-font-size: 48px;
   }
@@ -198,7 +198,7 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
   }
   
   .text-fixed-subtitle {
-    font-size: 6vmin !important; /* Increased for mobile readability */
+    font-size: 4.5vmin !important; /* Truly zoom independent */
     line-height: 1.25 !important;
     min-font-size: 18px;
   }
