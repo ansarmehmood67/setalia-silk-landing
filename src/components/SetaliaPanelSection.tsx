@@ -36,7 +36,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Ultra-premium luxury parallax with silk-smooth movement
+  // Professional parallax with visible depth effects
   useEffect(() => {
     let animationFrameId: number;
     let currentY = 0;
@@ -52,10 +52,14 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           (windowHeight - rect.top) / (windowHeight + rect.height)
         ));
         
-        // Luxury movement: subtle and refined
-        // Background moves ±20px max, foreground ±8px max
+        // Professional parallax with clearly visible movement
+        // Background: ±80px max, Foreground: ±40px max
         const normalizedProgress = (progress - 0.5) * 2; // -1 to 1
-        targetY = normalizedProgress * (isMobile ? 8 : 20);
+        
+        // Add subtle sine wave for organic movement
+        const sineEase = Math.sin(normalizedProgress * Math.PI * 0.5) * normalizedProgress;
+        
+        targetY = sineEase * (isMobile ? 25 : 80);
       }
     };
     
@@ -98,11 +102,11 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         minHeight: isMobile ? "calc(100vh - env(safe-area-inset-bottom, 0px))" : "100vh",
       }}
     >
-      {/* Background with luxury parallax */}
+      {/* Background with professional parallax - slower movement for depth */}
       <div
         className="absolute inset-0"
         style={{ 
-          transform: `translate3d(0, ${parallaxY * 0.7}px, 0)`,
+          transform: `translate3d(0, ${parallaxY * 0.5}px, 0)`,
           willChange: 'transform'
         }}
       >
@@ -137,8 +141,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             transform: isMobile
               ? "translateX(-50%)"
               : title === "SETALIA"
-                ? `translate3d(-50%, calc(-50% + ${parallaxY * 1.2}px), 0)`
-                : `translate3d(0, calc(-50% + ${parallaxY * 1.2}px), 0)`,
+                ? `translate3d(-50%, calc(-50% + ${parallaxY * 1.5}px), 0)`
+                : `translate3d(0, calc(-50% + ${parallaxY * 1.5}px), 0)`,
             opacity: isMobile ? 0.9 : 1,
             willChange: 'transform'
           }}
