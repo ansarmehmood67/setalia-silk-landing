@@ -24,8 +24,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
-  const [smoothParallaxOffset, setSmoothParallaxOffset] = useState(0);
+  const [parallaxY, setParallaxY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -35,52 +34,51 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Enhanced parallax effect with easing and multiple layers
+  // Ultra-premium luxury parallax with silk-smooth movement
   useEffect(() => {
-    let ticking = false;
     let animationFrameId: number;
-    
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-    const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+    let currentY = 0;
+    let targetY = 0;
     
     const handleScroll = () => {
-      if (!ticking) {
-        animationFrameId = requestAnimationFrame(() => {
-          if (sectionRef.current) {
-            const rect = sectionRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const sectionHeight = rect.height;
-            
-            // Enhanced progress calculation for smoother transitions
-            const rawProgress = (windowHeight - rect.top) / (windowHeight + sectionHeight);
-            const clampedProgress = Math.max(-0.2, Math.min(1.2, rawProgress));
-            
-            // Apply easing and increased range for premium feel
-            const easedProgress = easeOutCubic(Math.abs(clampedProgress - 0.5) * 2) * Math.sign(clampedProgress - 0.5);
-            const enhancedOffset = easedProgress * (isMobile ? 80 : 160); // Increased from ±50 to ±80/160
-            
-            setParallaxOffset(enhancedOffset);
-          }
-          ticking = false;
-        });
-        ticking = true;
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Calculate smooth progress (0 to 1) through viewport
+        const progress = Math.max(0, Math.min(1, 
+          (windowHeight - rect.top) / (windowHeight + rect.height)
+        ));
+        
+        // Luxury movement: subtle and refined
+        // Background moves ±20px max, foreground ±8px max
+        const normalizedProgress = (progress - 0.5) * 2; // -1 to 1
+        targetY = normalizedProgress * (isMobile ? 8 : 20);
       }
     };
     
-    // Smooth interpolation for buttery smooth movement
-    const smoothingInterval = setInterval(() => {
-      setSmoothParallaxOffset(prev => lerp(prev, parallaxOffset, 0.08));
-    }, 16); // ~60fps
+    const smoothUpdate = () => {
+      // Luxury easing: smooth as silk, no stuttering
+      const ease = 0.12;
+      currentY += (targetY - currentY) * ease;
+      
+      // Only update state if change is meaningful (prevents unnecessary renders)
+      if (Math.abs(currentY - parallaxY) > 0.01) {
+        setParallaxY(currentY);
+      }
+      
+      animationFrameId = requestAnimationFrame(smoothUpdate);
+    };
     
     handleScroll();
+    smoothUpdate();
     window.addEventListener("scroll", handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearInterval(smoothingInterval);
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [parallaxOffset, isMobile]);
+  }, [parallaxY, isMobile]);
 
   useEffect(() => {
     const obs = new IntersectionObserver(([entry]) => {
@@ -98,11 +96,11 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         minHeight: isMobile ? "calc(100vh - env(safe-area-inset-bottom, 0px))" : "100vh",
       }}
     >
-      {/* Background with enhanced parallax and performance optimizations */}
+      {/* Background with luxury parallax */}
       <div
         className="absolute inset-0"
         style={{ 
-          transform: `translate3d(0, ${smoothParallaxOffset * 0.6}px, 0) scale(${1 + Math.abs(smoothParallaxOffset) * 0.0002})`,
+          transform: `translate3d(0, ${parallaxY * 0.7}px, 0)`,
           willChange: 'transform'
         }}
       >
@@ -137,8 +135,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             transform: isMobile
               ? "translateX(-50%)"
               : title === "SETALIA"
-                ? `translate3d(-50%, calc(-50% + ${smoothParallaxOffset * 0.8}px), 0) rotate(${smoothParallaxOffset * 0.02}deg)`
-                : `translate3d(0, calc(-50% + ${smoothParallaxOffset * 0.8}px), 0) rotate(${smoothParallaxOffset * 0.015}deg)`,
+                ? `translate3d(-50%, calc(-50% + ${parallaxY * 1.2}px), 0)`
+                : `translate3d(0, calc(-50% + ${parallaxY * 1.2}px), 0)`,
             opacity: isMobile ? 0.9 : 1,
             willChange: 'transform'
           }}
