@@ -91,32 +91,37 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         />
       </div>
 
-      {/* Foreground (model) — anchored bottom on mobile, center-left on desktop */}
+      {/* Foreground (model) — full screen on hero, positioned on others */}
       {foregroundImage && (
         <img
           src={foregroundImage}
           alt="Decorative foreground"
           className={
-            // Mobile: bottom-center to eliminate awkward gap
-            // Desktop: first section centered, other sections left column
+            // Hero section: full screen coverage
+            // Other sections: maintain original positioning
             `pointer-events-none select-none z-10
-             absolute ${isMobile
+             absolute ${title === "SETALIA"
+                ? "inset-0 w-full h-full object-cover object-center"
+              : isMobile
                 ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
-              : title === "SETALIA" 
-                  ? "left-[35%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
-                  : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
+                : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
           }
           style={{
-            transform: isMobile
-              ? "translateX(-50%)"
-              : title === "SETALIA"
-                ? `translate(-50%, calc(-50% + ${parallaxOffset * 0.2}px))`
+            transform: title === "SETALIA" 
+              ? `translateY(${parallaxOffset * 0.2}px)`
+              : isMobile
+                ? "translateX(-50%)"
                 : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
-            opacity: isMobile ? 0.9 : 1,
+            opacity: title === "SETALIA" ? 0.8 : (isMobile ? 0.9 : 1),
           }}
           loading="lazy"
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
+      )}
+
+      {/* Subtle overlay for hero section text readability */}
+      {title === "SETALIA" && (
+        <div className="absolute inset-0 z-15 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       )}
 
       {/* Content */}
