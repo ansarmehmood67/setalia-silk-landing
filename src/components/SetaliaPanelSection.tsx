@@ -126,7 +126,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
 
             // ✅ Mobile-only: nudge the HERO image crop a bit to the right
             objectPosition:
-              title === "SETALIA" && isMobile ? "55% center" : undefined,
+              title === "SETALIA" && isMobile ? "45% center" : undefined,
           }}
           loading="lazy"
           onError={(e) => (e.currentTarget.style.display = "none")}
