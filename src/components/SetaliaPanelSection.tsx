@@ -42,7 +42,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           if (sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+            const progress =
+              (windowHeight - rect.top) / (windowHeight + rect.height);
             if (progress >= -0.1 && progress <= 1.1) {
               const offset = (progress - 0.5) * 100; // -50..+50
               setParallaxOffset(offset);
@@ -59,9 +60,12 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   }, []);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setIsVisible(true);
-    }, { threshold: 0.3 });
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.3 }
+    );
     if (sectionRef.current) obs.observe(sectionRef.current);
     return () => obs.disconnect();
   }, []);
@@ -71,7 +75,9 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       ref={sectionRef}
       className={`relative h-[100dvh] w-full overflow-hidden panel-gradient ${className}`}
       style={{
-        minHeight: isMobile ? "calc(100vh - env(safe-area-inset-bottom, 0px))" : "100vh",
+        minHeight: isMobile
+          ? "calc(100vh - env(safe-area-inset-bottom, 0px))"
+          : "100vh",
       }}
     >
       {/* Background with parallax */}
@@ -97,26 +103,30 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           src={foregroundImage}
           alt="Decorative foreground"
           className={
-            // Hero section: full screen on mobile, positioned on desktop
-            // Other sections: maintain original positioning
-            `pointer-events-none select-none z-10
-             absolute ${title === "SETALIA" && isMobile
-                ? "inset-0 w-full h-full object-cover object-center"
+            `pointer-events-none select-none z-10 absolute ` +
+            (title === "SETALIA" && isMobile
+              ? "inset-0 w-full h-full object-cover object-center"
               : title === "SETALIA" && !isMobile
-                ? "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+              ? "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
               : isMobile
-                ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
-                : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
+              ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
+              : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]")
           }
           style={{
-            transform: title === "SETALIA" && isMobile
-              ? `translateY(${parallaxOffset * 0.2}px)`
-              : title === "SETALIA" && !isMobile
+            // parallax/y-centering
+            transform:
+              title === "SETALIA" && isMobile
+                ? `translateY(${parallaxOffset * 0.2}px)`
+                : title === "SETALIA" && !isMobile
                 ? `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`
-              : isMobile
+                : isMobile
                 ? "translateX(-50%)"
                 : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
-            opacity: title === "SETALIA" && isMobile ? 0.8 : (isMobile ? 0.9 : 1),
+            opacity: title === "SETALIA" && isMobile ? 0.8 : isMobile ? 0.9 : 1,
+
+            // ✅ Mobile-only: nudge the HERO image crop a bit to the right
+            objectPosition:
+              title === "SETALIA" && isMobile ? "55% center" : undefined,
           }}
           loading="lazy"
           onError={(e) => (e.currentTarget.style.display = "none")}
@@ -131,34 +141,60 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Content */}
       <div
         className={`absolute inset-0 z-20
-          ${isMobile 
-            ? "flex items-center justify-center pb-48" 
-            : title === "SETALIA" 
+          ${
+            isMobile
+              ? "flex items-center justify-center"
+              : title === "SETALIA"
               ? "grid justify-items-center items-end pb-16"
-              : "grid place-items-center"}
+              : "grid place-items-center"
+          }
         `}
+        // ✅ Mobile-only: place content ~62% down so it doesn't cover the face
+        style={
+          isMobile
+            ? {
+                position: "absolute",
+                top: "62vh",
+                transform: "translateY(-50%)",
+                left: 0,
+                right: 0,
+              }
+            : {}
+        }
       >
         <div
-          className={`text-center px-6 max-w-4xl
-            ${isVisible ? "swipe-in-left" : "opacity-0"}`}
+          className={`text-center px-6 max-w-4xl ${
+            isVisible ? "swipe-in-left" : "opacity-0"
+          }`}
         >
           {/* Decorative top mark (optional) */}
           {decorativeImage && (
             <div className="mb-8 flex justify-center">
-              <img src={decorativeImage} alt="" className="max-h-16 md:max-h-20 opacity-80" />
+              <img
+                src={decorativeImage}
+                alt=""
+                className="max-h-16 md:max-h-20 opacity-80"
+              />
             </div>
           )}
 
-          {/* Title with strong shadow like Canva */}
+          {/* Title */}
           <h1
-            className={`font-display ${title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"}
-                        ${title === "SETALIA" ? "ts-red-shadow-strong" : "ts-strong"} text-pure-white mb-4 tracking-[0.18em]`}
+            className={`font-display ${
+              title === "SETALIA" ? "text-fixed-title" : "text-fixed-title-secondary"
+            } ${
+              title === "SETALIA" ? "ts-red-shadow-strong" : "ts-strong"
+            } text-pure-white mb-4 tracking-[0.18em]`}
           >
             {title}
           </h1>
 
-          {/* Subtitle with softer shadow */}
-          <p className={`font-secondary text-fixed-subtitle ${title === "SETALIA" ? "ts-red-shadow-soft" : "ts-soft"} text-pure-white mb-8 tracking-[0.08em] uppercase`}>
+          {/* Subtitle */}
+          <p
+            className={`font-secondary text-fixed-subtitle ${
+              title === "SETALIA" ? "ts-red-shadow-soft" : "ts-soft"
+            } text-pure-white mb-8 tracking-[0.08em] uppercase`}
+          >
             {subtitle}
           </p>
 
