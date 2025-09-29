@@ -47,8 +47,8 @@ All colors MUST be HSL. Typography: Bodoni Moda + Montserrat
     --radius: 0; /* Sharp 90° corners */
     
     /* Typography Scale */
-    --font-display: 'Bodoni Moda', 'Playfair Display', serif;
-    --font-secondary: 'Montserrat', sans-serif;
+    --font-display: 'Alata', sans-serif;
+    --font-secondary: 'Tenor Sans', sans-serif;
     
     /* Luxury Spacing */
     --tracking-display: 0.2em; /* +8 tracking */
