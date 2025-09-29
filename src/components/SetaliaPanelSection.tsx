@@ -22,11 +22,9 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   className = "",
   onEnquiryClick,
 }) => {
-  // Debug: Ensure new code is loaded
-  console.log('SetaliaPanelSection: Using parallaxY variable');
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [parallaxY, setParallaxY] = useState(0);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -36,43 +34,29 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Fixed parallax with direct scroll calculation
   useEffect(() => {
-    let animationFrameId: number;
-    
+    let ticking = false;
     const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        // Simple, direct calculation: how much of the section is visible
-        const elementCenter = rect.top + rect.height / 2;
-        const screenCenter = windowHeight / 2;
-        const distance = elementCenter - screenCenter;
-        
-        // Direct parallax: scroll distance affects movement
-        // Larger movement ranges for visible effect
-        const movement = isMobile ? distance * 0.15 : distance * 0.3;
-        
-        // Clamp to reasonable bounds
-        const clampedMovement = Math.max(-150, Math.min(150, movement));
-        
-        console.log('Parallax movement:', clampedMovement, 'Element distance:', distance);
-        setParallaxY(clampedMovement);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+            if (progress >= -0.1 && progress <= 1.1) {
+              const offset = (progress - 0.5) * 100; // -50..+50
+              setParallaxOffset(offset);
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
-    
-    const smoothUpdate = () => {
-      handleScroll();
-      animationFrameId = requestAnimationFrame(smoothUpdate);
-    };
-    
-    smoothUpdate();
-    
-    return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    };
-  }, [isMobile]);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(([entry]) => {
@@ -90,13 +74,10 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         minHeight: isMobile ? "calc(100vh - env(safe-area-inset-bottom, 0px))" : "100vh",
       }}
     >
-      {/* Background with professional parallax - slower movement for depth */}
+      {/* Background with parallax */}
       <div
         className="absolute inset-0"
-        style={{ 
-          transform: `translate3d(0, ${parallaxY * 0.5}px, 0)`,
-          willChange: 'transform'
-        }}
+        style={{ transform: `translate3d(0, ${parallaxOffset}px, 0)` }}
       >
         <img
           src={backgroundImage}
@@ -129,10 +110,9 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             transform: isMobile
               ? "translateX(-50%)"
               : title === "SETALIA"
-                ? `translate3d(-50%, calc(-50% + ${parallaxY * 1.5}px), 0)`
-                : `translate3d(0, calc(-50% + ${parallaxY * 1.5}px), 0)`,
+                ? `translate(-50%, calc(-50% + ${parallaxOffset * 0.2}px))`
+                : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
             opacity: isMobile ? 0.9 : 1,
-            willChange: 'transform'
           }}
           loading="lazy"
           onError={(e) => (e.currentTarget.style.display = "none")}
