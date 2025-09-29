@@ -10,6 +10,7 @@ interface SetaliaPanelSectionProps {
   altText: string;
   className?: string;
   onEnquiryClick?: () => void;
+  dimBackground?: boolean;
 }
 
 const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
@@ -21,6 +22,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
   altText,
   className = "",
   onEnquiryClick,
+  dimBackground = false,
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -97,6 +99,12 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
         />
       </div>
 
+      {/* ⭐ NEW — subtle overlay ONLY when dimBackground is true.
+          Z-index is between background (0) and foreground (10), so the model (if any) stays crisp. */}
+      {dimBackground && (
+        <div className="absolute inset-0 z-[5] pointer-events-none bg-gradient-to-t from-black/55 via-black/35 to-black/20" />
+      )}
+
       {/* Foreground (model) — full screen on hero, positioned on others */}
       {foregroundImage && (
         <img
@@ -107,7 +115,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             (title === "SETALIA" && isMobile
               ? "inset-0 w-full h-full object-cover object-center"
               : title === "SETALIA" && !isMobile
-              ? "left-60 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+              ? "left-[20vw] bottom-0 translate-y-0 w-[38%] max-w-[620px]"
               : isMobile
               ? "bottom-0 left-1/2 -translate-x-1/2 w-[95%] max-w-[550px]"
               : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]")
@@ -118,7 +126,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
               title === "SETALIA" && isMobile
                 ? `translateY(${parallaxOffset * 0.2}px)`
                 : title === "SETALIA" && !isMobile
-                ? `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`
+                ? "translateY(0)"
                 : isMobile
                 ? "translateX(-50%)"
                 : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,

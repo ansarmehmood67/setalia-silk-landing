@@ -9,7 +9,7 @@ const heroBackground = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v17589
 const heroForeground = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1759087816/card_1_image_upper_1_jklm6a.png";
 const panel2Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928441/card_2_backgroun_uarjfj.png";
 const panel3Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928438/card_3_background_lxx14a.png";
-const panel4Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1759177314/card_4_background_1_anlnhl.png";
+const panel4Background = "https://res.cloudinary.com/dc1zzgsjw/image/upload/v1758928435/card_4_background_hujztq.png";
 
 const Index = () => {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
@@ -57,6 +57,7 @@ const Index = () => {
         backgroundImage={panel4Background}
         altText="Italian textile studio with traditional weaving equipment"
         onEnquiryClick={() => setIsEnquiryModalOpen(true)}
+        dimBackground={true}
       />
 
       {/* Panel 5 - Coming Soon */}
