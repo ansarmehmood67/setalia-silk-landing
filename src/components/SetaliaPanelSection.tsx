@@ -102,8 +102,8 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
             `pointer-events-none select-none z-10
              absolute ${isMobile
                 ? "bottom-0 left-1/2 -translate-x-1/2 w-[68%] max-w-[360px]"
-                : title === "SETALIA" 
-                  ? "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+              : title === "SETALIA" 
+                  ? "left-[45%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
                   : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
           }
           style={{
@@ -125,7 +125,7 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           ${isMobile 
             ? "flex items-center justify-center pb-14" 
             : title === "SETALIA" 
-              ? "grid place-items-end pb-16"
+              ? "grid justify-items-center items-end pb-16"
               : "grid place-items-center"}
         `}
       >
