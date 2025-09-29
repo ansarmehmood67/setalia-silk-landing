@@ -98,16 +98,20 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
           alt="Decorative foreground"
           className={
             // Mobile: bottom-center to eliminate awkward gap
-            // Desktop: left column, vertically centered
+            // Desktop: first section centered, other sections left column
             `pointer-events-none select-none z-10
              absolute ${isMobile
                 ? "bottom-0 left-1/2 -translate-x-1/2 w-[68%] max-w-[360px]"
-                : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
+                : title === "SETALIA" 
+                  ? "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"
+                  : "left-12 top-1/2 -translate-y-1/2 w-[38%] max-w-[620px]"}`
           }
           style={{
             transform: isMobile
               ? "translateX(-50%)"
-              : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
+              : title === "SETALIA"
+                ? `translate(-50%, calc(-50% + ${parallaxOffset * 0.2}px))`
+                : `translateY(calc(-50% + ${parallaxOffset * 0.2}px))`,
             opacity: isMobile ? 0.9 : 1,
           }}
           loading="lazy"
@@ -118,7 +122,11 @@ const SetaliaPanelSection: React.FC<SetaliaPanelSectionProps> = ({
       {/* Content */}
       <div
         className={`absolute inset-0 z-20
-          ${isMobile ? "flex items-center justify-center pb-14" : "grid place-items-center"}
+          ${isMobile 
+            ? "flex items-center justify-center pb-14" 
+            : title === "SETALIA" 
+              ? "grid place-items-end pb-16"
+              : "grid place-items-center"}
         `}
       >
         <div
