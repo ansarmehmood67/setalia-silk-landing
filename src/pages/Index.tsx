@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SetaliaPanelSection from "@/components/SetaliaPanelSection";
+import MailerLiteFormSection from "@/components/MailerLiteFormSection";
 import EnquiryModal from "@/components/EnquiryModal";
 import Header from "@/components/Header";
 import decorativeSun from "@/assets/decorative-sun.png";
@@ -60,14 +61,13 @@ const Index = () => {
         dimBackground={true}
       />
 
-      {/* Panel 5 - Coming Soon */}
-      <SetaliaPanelSection
+      {/* Panel 5 - Coming Soon with MailerLite Form */}
+      <MailerLiteFormSection
         title="COMING SOON"
         subtitle="MADE FOR THE ELITE"
         backgroundImage={heroBackground}
         decorativeImage={decorativeSun}
         altText="Black silk background with anticipation of luxury launch"
-        onEnquiryClick={() => setIsEnquiryModalOpen(true)}
       />
 
       {/* Enquiry Modal */}
